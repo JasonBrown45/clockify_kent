@@ -1,0 +1,11 @@
+flutter_native_splash:
+  color: "#25367B"
+  image: "assets/images/clockify_logo.png"
+
+android_12:
+  image: "assets/images/clockify_logo.png"
+  icon_background_color: "#25367B"
+
+web: false
+
+

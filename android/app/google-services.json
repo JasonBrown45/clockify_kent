@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "605653696899",
+    "firebase_url": "https://clocklify-kent-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "clocklify-kent",
+    "storage_bucket": "clocklify-kent.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605653696899:android:637f28673b00c57a15f6b6",
+        "android_client_info": {
+          "package_name": "com.example.clockify_kent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605653696899-kmcqbr9mf66uqdc1tt5dab7m121db1bu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfZ-yzVxm0OpYCf0kBSMMb7C5EGvntSRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605653696899-kmcqbr9mf66uqdc1tt5dab7m121db1bu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "605653696899-bp97htddhsst32ejlssr10e1ldg7o1me.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.clockifyKent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

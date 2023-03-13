@@ -1,0 +1,12 @@
+"filename", "language", "Dart", "comment", "blank", "total"
+"/Users/dss33/flutter_project_training/clockify_kent/lib/activity/presentation/timer_page.dart", "Dart", 0, 0, 1, 1
+"/Users/dss33/flutter_project_training/clockify_kent/lib/auth/model/user_auth_model.dart", "Dart", 48, 0, 7, 55
+"/Users/dss33/flutter_project_training/clockify_kent/lib/auth/presentation/email_page.dart", "Dart", 105, 0, 5, 110
+"/Users/dss33/flutter_project_training/clockify_kent/lib/auth/presentation/password_page.dart", "Dart", 110, 2, 7, 119
+"/Users/dss33/flutter_project_training/clockify_kent/lib/auth/presentation/register_page.dart", "Dart", 204, 3, 8, 215
+"/Users/dss33/flutter_project_training/clockify_kent/lib/firebase/firebase_options.dart", "Dart", 56, 12, 4, 72
+"/Users/dss33/flutter_project_training/clockify_kent/lib/main.dart", "Dart", 37, 1, 5, 43
+"/Users/dss33/flutter_project_training/clockify_kent/lib/model/user.dart", "Dart", 14, 0, 6, 20
+"/Users/dss33/flutter_project_training/clockify_kent/lib/model/user.g.dart", "Dart", 39, 4, 8, 51
+"/Users/dss33/flutter_project_training/clockify_kent/lib/route/page_route.dart", "Dart", 68, 0, 14, 82
+"Total", "-", 681, 22, 65, 768
