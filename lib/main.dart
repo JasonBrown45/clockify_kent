@@ -6,10 +6,10 @@ import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
+import 'activity/state/timer_state.dart';
 import 'auth/state/user_auth_state.dart';
 import 'activity/state/activity_state.dart';
 import 'auth/presentation/email_page.dart';
-import 'hive_helper.dart';
 import 'model/activity.dart';
 import 'model/user.dart';
 
@@ -21,7 +21,8 @@ void main() async {
 
   Directory appPath = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appPath.path);
-  HiveHelper.initHiveProcess();
+  Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(ActivityAdapter());
 
   userBox = await Hive.openBox<User>('user');
   activityBox = await Hive.openBox<Activity>('activity');
@@ -30,6 +31,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (context) => AuthState()),
       ChangeNotifierProvider(create: (context) => ActivityState()),
+      ChangeNotifierProvider(create: (context) => TimerState()),
     ],
     child: const MainApp(),
   ));

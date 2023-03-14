@@ -10,9 +10,6 @@ class Activity extends HiveObject {
   @HiveField(1)
   int userID;
 
-  @HiveField(2)
-  DateTime eventDate;
-
   @HiveField(3)
   String activityDesc;
 
@@ -31,7 +28,6 @@ class Activity extends HiveObject {
   Activity(
       {required this.activityID,
       required this.userID,
-      required this.eventDate,
       required this.activityDesc,
       required this.listStart,
       required this.listEnd,

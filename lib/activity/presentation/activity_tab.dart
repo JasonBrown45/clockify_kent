@@ -58,14 +58,15 @@ class _ActivityBarState extends State<ActivityBar>
               ]),
           Expanded(
             child: TabBarView(controller: _activityTabController, children: [
-              ActivityPage(
-                activeUser: widget.activeUser,
-                onNext: () => _activityTabController.index = 1,
-              ),
               TimerPage(
                 activeUser: widget.activeUser,
+                onNext: () => _activityTabController.index = 1,
+                inputtedActivityID: -1,
+              ),
+              ActivityPage(
+                activeUser: widget.activeUser,
                 onNext: () => _activityTabController.index = 2,
-              )
+              ),
             ]),
           ),
         ]),
@@ -73,7 +74,3 @@ class _ActivityBarState extends State<ActivityBar>
     );
   }
 }
-
-/*
-          bottom: 
-                      body:           */
