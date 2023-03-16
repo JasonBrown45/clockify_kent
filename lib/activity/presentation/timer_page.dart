@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 import '../../main.dart';
 import '../../model/activity.dart';
@@ -70,7 +69,9 @@ class _TimerPageState extends State<TimerPage> {
                 'GPS Permission ditolak secara permanen, mohon untuk memberi ijin lokasi untuk dapat menggunakan fitur lokasi')));
       } else {
         position = await Geolocator.getCurrentPosition();
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       }
     } else {
       ScaffoldMessenger.of(context)
@@ -102,6 +103,7 @@ class _TimerPageState extends State<TimerPage> {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(45, 0, 40, 30),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -126,13 +128,13 @@ class _TimerPageState extends State<TimerPage> {
                         Text(
                             timerState.startTime == null
                                 ? '-'
-                                : '${timerState.startTime!.day} ${month[timerState.startTime!.month + 1]} ${timerState.startTime!.year}',
+                                : '${timerState.startTime!.day} ${month[timerState.startTime!.month - 1]} ${timerState.startTime!.year}',
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 15.0)),
                       ],
                     ),
                     const SizedBox(
-                      width: 115,
+                      width: 100,
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -157,7 +159,7 @@ class _TimerPageState extends State<TimerPage> {
                         Text(
                             timerState.endTime == null
                                 ? '-'
-                                : '${timerState.endTime!.day} ${month[timerState.endTime!.month + 1]} ${timerState.endTime!.year}',
+                                : '${timerState.endTime!.day} ${month[timerState.endTime!.month - 1]} ${timerState.endTime!.year}',
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 15.0)),
                       ],
@@ -252,9 +254,10 @@ class _TimerPageState extends State<TimerPage> {
 
   stopResetButton() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         SizedBox(
-          width: 100,
+          width: 150,
           child: ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateColor.resolveWith(
@@ -269,15 +272,17 @@ class _TimerPageState extends State<TimerPage> {
             },
           ),
         ),
+        //const SizedBox(width: 150,),
         SizedBox(
-          width: 100,
+          width: 150,
           child: ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith(
-                    (states) => const Color(0XFF45CDDC)),
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.white),
                 shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.elliptical(8, 8))))),
-            child: const Text('RESET', style: TextStyle(color: Colors.white)),
+            child:
+                const Text('RESET', style: TextStyle(color: Color(0XFFA7A6C5))),
             onPressed: () {
               setState(() {
                 timerState.resetTimer();
@@ -291,9 +296,10 @@ class _TimerPageState extends State<TimerPage> {
 
   saveDeleteButton() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         SizedBox(
-          width: 100,
+          width: 150,
           child: ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateColor.resolveWith(
@@ -317,31 +323,36 @@ class _TimerPageState extends State<TimerPage> {
                       const SnackBar(content: Text('Cek Waktu Error')));
                   return;
                 }
+                DateTime activityDate = DateTime(timerState.startTime!.year,
+                    timerState.startTime!.month, timerState.startTime!.day);
                 Activity activity = Activity(
-                    activityID: activityBox.length,
+                    activityID: activityBox.length + 1,
                     userID: widget.activeUser.userID,
                     activityDesc: desc!,
-                    listStart: timerState.startTime!,
-                    listEnd: timerState.endTime!,
+                    activityDate: activityDate,
+                    activityStart: timerState.startTime!,
+                    activityEnd: timerState.endTime!,
                     latitude: position!.latitude,
                     longitude: position!.longitude);
                 timerState.saveActivity(activity);
                 timerState.resetTimer();
                 timerState.startTime = null;
                 timerState.endTime = null;
+                //setState(() {});
               });
             },
           ),
         ),
         SizedBox(
-          width: 100,
+          width: 150,
           child: ElevatedButton(
             style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith(
-                    (states) => const Color(0XFF45CDDC)),
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.white),
                 shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.elliptical(8, 8))))),
-            child: const Text('DELETE', style: TextStyle(color: Colors.white)),
+            child: const Text('DELETE',
+                style: TextStyle(color: Color(0XFFA7A6C5))),
             onPressed: () {
               setState(() {
                 timerState.deleteActivity(widget.inputtedActivityID);

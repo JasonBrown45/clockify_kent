@@ -46,7 +46,7 @@ class AuthState extends ChangeNotifier {
       return false;
     } else {
       insertUser(User(
-          userID: userBox.length,
+          userID: userBox.length + 1,
           email: email,
           password: password,
           isLogin: false));

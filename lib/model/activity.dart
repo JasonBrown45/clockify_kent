@@ -10,14 +10,17 @@ class Activity extends HiveObject {
   @HiveField(1)
   int userID;
 
-  @HiveField(3)
+  @HiveField(2)
   String activityDesc;
 
+  @HiveField(3)
+  DateTime activityDate;
+
   @HiveField(4)
-  DateTime listStart;
+  DateTime activityStart;
 
   @HiveField(5)
-  DateTime listEnd;
+  DateTime activityEnd;
 
   @HiveField(6)
   double latitude;
@@ -29,8 +32,9 @@ class Activity extends HiveObject {
       {required this.activityID,
       required this.userID,
       required this.activityDesc,
-      required this.listStart,
-      required this.listEnd,
+      required this.activityDate,
+      required this.activityStart,
+      required this.activityEnd,
       required this.latitude,
       required this.longitude});
 }

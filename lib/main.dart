@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
+import 'activity/state/activity_seeder.dart';
 import 'activity/state/timer_state.dart';
 import 'auth/state/user_auth_state.dart';
 import 'activity/state/activity_state.dart';
@@ -26,6 +27,8 @@ void main() async {
 
   userBox = await Hive.openBox<User>('user');
   activityBox = await Hive.openBox<Activity>('activity');
+  //activityBox.deleteFromDisk();
+  //await ActivitySeeder.seedActivity();
 
   runApp(MultiProvider(
     providers: [

@@ -73,8 +73,9 @@ class TimerState extends ChangeNotifier {
             activityID: -1,
             userID: -1,
             activityDesc: ' ',
-            listStart: DateTime(1 - 1 - 1970),
-            listEnd: DateTime(1 - 1 - 1970),
+            activityDate: DateTime(1 - 1 - 1970),
+            activityStart: DateTime(1 - 1 - 1970),
+            activityEnd: DateTime(1 - 1 - 1970),
             latitude: -1,
             longitude: -1));
     if (result.activityID == -1) {

@@ -14,8 +14,10 @@ class ActivityState extends ChangeNotifier {
     Activity temp = activityBox.values
         .firstWhere((element) => element.activityID == activityID);
     temp.activityDesc = desc;
+    print(desc);
     var index = temp.key;
-    await activityBox.put(index, temp);
+    await activityBox.put(temp.key, temp);
+    print(temp.activityDesc);
     notifyListeners();
   }
 
@@ -26,13 +28,13 @@ class ActivityState extends ChangeNotifier {
     notifyListeners();
   }
 
-  filterLatestDate() {
+  sortByDate() {
     List temp = activityBox.values.toList();
-    temp.sort((a, b) => a.eventDate.compareTo(b.eventDate));
+    temp.sort((a, b) => a.activityDate.compareTo(b.activityDate));
     return temp;
   }
 
-  filterNearby(Position pos) {
+  sortNearby(Position pos) {
     List temp = activityBox.values.toList();
     temp.sort((a, b) {
       if (a.latitude == null) {

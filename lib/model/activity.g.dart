@@ -19,9 +19,10 @@ class ActivityAdapter extends TypeAdapter<Activity> {
     return Activity(
       activityID: fields[0] as int,
       userID: fields[1] as int,
-      activityDesc: fields[3] as String,
-      listStart: fields[4] as DateTime,
-      listEnd: fields[5] as DateTime,
+      activityDesc: fields[2] as String,
+      activityDate: fields[3] as DateTime,
+      activityStart: fields[4] as DateTime,
+      activityEnd: fields[5] as DateTime,
       latitude: fields[6] as double,
       longitude: fields[7] as double,
     );
@@ -30,17 +31,19 @@ class ActivityAdapter extends TypeAdapter<Activity> {
   @override
   void write(BinaryWriter writer, Activity obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.activityID)
       ..writeByte(1)
       ..write(obj.userID)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.activityDesc)
+      ..writeByte(3)
+      ..write(obj.activityDate)
       ..writeByte(4)
-      ..write(obj.listStart)
+      ..write(obj.activityStart)
       ..writeByte(5)
-      ..write(obj.listEnd)
+      ..write(obj.activityEnd)
       ..writeByte(6)
       ..write(obj.latitude)
       ..writeByte(7)
