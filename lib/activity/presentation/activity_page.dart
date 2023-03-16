@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:clockify_kent/activity/presentation/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,7 +5,8 @@ import 'package:grouped_list/grouped_list.dart';
 
 import '../../main.dart';
 import '../../model/user.dart';
-import '../../route/page_route.dart';
+import '../../utils/string_utils.dart';
+import '../state/activity_state.dart';
 
 class ActivityPage extends StatefulWidget {
   @override
@@ -22,22 +21,7 @@ class ActivityPage extends StatefulWidget {
 
 class _ActivityPageState extends State<ActivityPage> {
   final List<String> sortBy = ['Latest Date', 'Nearby'];
-  final List<String> month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ];
   Position? position;
-  late LocationPermission locationPermission;
 
   String? searchInput;
   String selectedSort = 'Latest Date';
@@ -50,6 +34,7 @@ class _ActivityPageState extends State<ActivityPage> {
           ? true
           : element.activityDesc.contains(searchInput))
       .toList();
+  late var tempLoc = ActivityState.sortNearby(position!, temp);
   @override
   void initState() {
     detectLocation();
@@ -110,6 +95,7 @@ class _ActivityPageState extends State<ActivityPage> {
                         ? element.activityDesc.contains(searchInput)
                         : true)
                     .toList();
+                tempLoc = ActivityState.sortNearby(position!, temp);
                 setState(() {});
               },
             ),
@@ -145,6 +131,7 @@ class _ActivityPageState extends State<ActivityPage> {
                 }).toList(),
                 onChanged: (newValue) {
                   selectedSort = newValue!;
+                  setState(() {});
                 }),
           ),
         ]),
@@ -153,10 +140,10 @@ class _ActivityPageState extends State<ActivityPage> {
             child: GroupedListView<dynamic, String>(
               elements: temp,
               groupBy: (element) =>
-                  '${element.activityDate.day} ${month[element.activityDate.month - 1]} ${element.activityDate.year}',
+                  '${element.activityDate.day} ${StringUtils.month[element.activityDate.month - 1]} ${element.activityDate.year}',
               groupComparator: (value1, value2) => value2.compareTo(value1),
               itemComparator: (element1, element2) =>
-                  (element1.activityStart).compareTo(element2.activityStart),
+                  (element2.activityStart).compareTo(element1.activityStart),
               order: GroupedListOrder.ASC,
               separator: const Divider(
                 thickness: 1,
@@ -179,10 +166,6 @@ class _ActivityPageState extends State<ActivityPage> {
                 ),
               ),
               indexedItemBuilder: (context, element, index) {
-                var date = ((element.activityEnd).subtract(Duration(
-                    hours: element.activityStart.hour,
-                    minutes: element.activityStart.minute,
-                    seconds: element.activityStart.second)));
                 return Dismissible(
                     background: Container(
                       alignment: Alignment.centerRight,
@@ -202,7 +185,6 @@ class _ActivityPageState extends State<ActivityPage> {
                     key: UniqueKey(),
                     child: ListTile(
                       onTap: () {
-                        print('tapped');
                         Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -215,7 +197,8 @@ class _ActivityPageState extends State<ActivityPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}:${date.second.toString().padLeft(2, '0')}',
+                                StringUtils.stopWatchSubtract(
+                                    element.activityEnd, element.activityStart),
                                 style: const TextStyle(color: Colors.white)),
                             Text(element.activityDesc,
                                 style: const TextStyle(color: Colors.white)),
@@ -230,7 +213,7 @@ class _ActivityPageState extends State<ActivityPage> {
                                   color: Colors.white60,
                                 ),
                                 Text(
-                                    '${element.activityStart.hour.toString().padLeft(2, '0')}:${element.activityStart.minute.toString().padLeft(2, '0')}:${element.activityStart.second.toString().padLeft(2, '0')} - ${element.activityEnd.hour.toString().padLeft(2, '0')}:${element.activityEnd.minute.toString().padLeft(2, '0')}:${element.activityEnd.second.toString().padLeft(2, '0')}',
+                                    '${StringUtils.stopWatch(element.activityStart)} - ${StringUtils.stopWatch(element.activityEnd)}',
                                     style:
                                         const TextStyle(color: Colors.white60)),
                               ],
@@ -254,73 +237,33 @@ class _ActivityPageState extends State<ActivityPage> {
           )
         ] else if (selectedSort == 'Nearby') ...[
           Expanded(
-            child: GroupedListView<dynamic, String>(
-              elements: temp,
-              groupBy: (element) =>
-                  '${element.activityDate.day} ${month[element.activityDate.month - 1]} ${element.activityDate.year}',
-              groupComparator: (value1, value2) => value2.compareTo(value1),
-              itemComparator: (element1, element2) =>
-                  Geolocator.distanceBetween(
-                          element1.latitude,
-                          element1.longitude,
-                          position!.latitude,
-                          position!.longitude)
-                      .compareTo(Geolocator.distanceBetween(
-                          element2.latitude,
-                          element2.longitude,
-                          position!.latitude,
-                          position!.longitude)),
-              order: GroupedListOrder.ASC,
-              separator: const Divider(
-                thickness: 1,
-                indent: 16,
-                endIndent: 16,
-                color: Color(0XFF434B8C),
-              ),
-              groupSeparatorBuilder: (String value) => Container(
-                width: double.infinity,
-                height: 24,
-                color: const Color(0XFF434B8C),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Text(
-                    value,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.yellow),
-                  ),
-                ),
-              ),
-              indexedItemBuilder: (context, element, index) {
-                var date = ((element.activityEnd).subtract(Duration(
-                    hours: element.activityStart.hour,
-                    minutes: element.activityStart.minute,
-                    seconds: element.activityStart.second)));
-                return Dismissible(
-                    background: Container(
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.only(right: 20),
-                      color: Colors.red,
-                      child: const Text(
-                        "DELETE",
-                        style: TextStyle(color: Colors.white),
+            child: ListView.builder(
+              itemCount: tempLoc.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 24,
+                      color: const Color(0XFF434B8C),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Text(
+                          StringUtils.dayMonthYear(tempLoc[index].activityDate),
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.yellow),
+                        ),
                       ),
                     ),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      activityBox.deleteAt(index);
-                      temp.removeAt(index);
-                      setState(() {});
-                    },
-                    key: ObjectKey(this),
-                    child: ListTile(
+                    ListTile(
                       onTap: () {
-                        print('tapped');
                         Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => DetailPage(
-                                        activity: element,
+                                        activity: tempLoc[index],
                                         activeUser: widget.activeUser)))
                             .then((value) => setState(() {}));
                       },
@@ -328,25 +271,47 @@ class _ActivityPageState extends State<ActivityPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}:${date.second.toString().padLeft(2, '0')}',
+                                StringUtils.stopWatchSubtract(
+                                    tempLoc[index].activityEnd,
+                                    tempLoc[index].activityStart),
                                 style: const TextStyle(color: Colors.white)),
-                            Text(element.activityDesc,
+                            Text(tempLoc[index].activityDesc,
                                 style: const TextStyle(color: Colors.white)),
                           ]),
                       subtitle: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                                '${element.activityStart.hour.toString().padLeft(2, '0')}:${element.activityStart.minute.toString().padLeft(2, '0')}:${element.activityStart.second.toString().padLeft(2, '0')} - ${element.activityEnd.hour.toString().padLeft(2, '0')}:${element.activityEnd.minute.toString().padLeft(2, '0')}:${element.activityEnd.second.toString().padLeft(2, '0')}',
-                                style: const TextStyle(color: Colors.white)),
-                            Text(
-                                '${element.latitude.toStringAsFixed(6)}.${element.longitude.toStringAsFixed(5)}',
-                                style: const TextStyle(color: Colors.white))
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.schedule,
+                                  color: Colors.white60,
+                                ),
+                                Text(
+                                    '${StringUtils.stopWatch(tempLoc[index].activityStart)} - ${StringUtils.stopWatch(tempLoc[index].activityEnd)}',
+                                    style:
+                                        const TextStyle(color: Colors.white60)),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  color: Colors.white60,
+                                ),
+                                Text(
+                                    '${tempLoc[index].latitude.toStringAsFixed(6)}.${tempLoc[index].longitude.toStringAsFixed(5)}',
+                                    style:
+                                        const TextStyle(color: Colors.white60)),
+                              ],
+                            )
                           ]),
-                    ));
+                    ),
+                  ],
+                );
               },
             ),
-          )
+          ),
         ]
       ]),
     );

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../model/activity.dart';
 import '../../route/page_route.dart';
+import '../../utils/string_utils.dart';
 import '../state/activity_state.dart';
 import 'activity_tab.dart';
 
@@ -17,20 +18,6 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  final List<String> month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ];
   late ActivityState activityState;
   String? desc;
 
@@ -42,10 +29,6 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    var date = ((widget.activity.activityEnd).subtract(Duration(
-        hours: widget.activity.activityStart.hour,
-        minutes: widget.activity.activityStart.minute,
-        seconds: widget.activity.activityStart.second)));
     return Scaffold(
       backgroundColor: const Color.fromRGBO(34, 57, 123, 1.0),
       body: SingleChildScrollView(
@@ -81,7 +64,7 @@ class _DetailPageState extends State<DetailPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
                 child: Text(
-                  '${widget.activity.activityDate.day} ${month[widget.activity.activityDate.month - 1]} ${widget.activity.activityDate.year}',
+                  StringUtils.dayMonthYear(widget.activity.activityDate),
                   style: const TextStyle(
                       color: Colors.yellow,
                       fontSize: 20.0,
@@ -93,7 +76,8 @@ class _DetailPageState extends State<DetailPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
                 child: Text(
-                  '${date.hour.toString().padLeft(2, '0')} : ${date.minute.toString().padLeft(2, '0')} : ${date.second.toString().padLeft(2, '0')}',
+                  StringUtils.stopWatchSubtract(widget.activity.activityEnd,
+                      widget.activity.activityStart),
                   style: const TextStyle(color: Colors.white, fontSize: 60.0),
                 ),
               ),
@@ -115,8 +99,7 @@ class _DetailPageState extends State<DetailPage> {
                       const SizedBox(
                         height: 5,
                       ),
-                      Text(
-                          '${widget.activity.activityStart.hour.toString().padLeft(2, '0')}:${widget.activity.activityStart.minute.toString().padLeft(2, '0')}:${widget.activity.activityStart.second.toString().padLeft(2, '0')}',
+                      Text(StringUtils.stopWatch(widget.activity.activityEnd),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18.0,
@@ -125,7 +108,8 @@ class _DetailPageState extends State<DetailPage> {
                         height: 5,
                       ),
                       Text(
-                          '${widget.activity.activityStart.day} ${month[widget.activity.activityStart.month - 1]} ${widget.activity.activityStart.year}',
+                          StringUtils.dayMonthYear(
+                              widget.activity.activityStart),
                           style: const TextStyle(
                               color: Colors.white, fontSize: 15.0)),
                     ],
@@ -142,8 +126,7 @@ class _DetailPageState extends State<DetailPage> {
                       const SizedBox(
                         height: 5,
                       ),
-                      Text(
-                          '${widget.activity.activityEnd.hour.toString().padLeft(2, '0')}:${widget.activity.activityEnd.minute.toString().padLeft(2, '0')}:${widget.activity.activityEnd.second.toString().padLeft(2, '0')}',
+                      Text(StringUtils.stopWatch(widget.activity.activityEnd),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18.0,
@@ -152,7 +135,7 @@ class _DetailPageState extends State<DetailPage> {
                         height: 5,
                       ),
                       Text(
-                          '${widget.activity.activityEnd.day} ${month[widget.activity.activityEnd.month - 1]} ${widget.activity.activityEnd.year}',
+                          StringUtils.dayMonthYear(widget.activity.activityEnd),
                           style: const TextStyle(
                               color: Colors.white, fontSize: 15.0)),
                     ],
@@ -238,7 +221,6 @@ class _DetailPageState extends State<DetailPage> {
                             activityState.updateActivity(
                                 widget.activity.activityID, desc!);
                           }
-                          //setState(() {});
                         });
                       },
                     ),
@@ -260,11 +242,10 @@ class _DetailPageState extends State<DetailPage> {
                           activityState
                               .deleteActivity(widget.activity.activityID);
                           Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ActivityBar(
-                                          activeUser: widget.activeUser)))
-                              .then((value) => setState(() {}));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ActivityBar(
+                                      activeUser: widget.activeUser)));
                         });
                       },
                     ),

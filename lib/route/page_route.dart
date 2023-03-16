@@ -10,7 +10,7 @@ import '../model/user.dart';
 
 Route createEmailPageRoute(email) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => const EmailPage(),
+    pageBuilder: (context, animation, secondaryAnimation) => EmailPage(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;

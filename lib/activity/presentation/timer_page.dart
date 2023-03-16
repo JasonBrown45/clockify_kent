@@ -6,6 +6,7 @@ import '../../model/activity.dart';
 import '../../model/user.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../../utils/string_utils.dart';
 import '../state/timer_state.dart';
 
 class TimerPage extends StatefulWidget {
@@ -25,22 +26,6 @@ class TimerPage extends StatefulWidget {
 class _TimerPageState extends State<TimerPage> {
   late TimerState timerState;
   Position? position;
-  late LocationPermission locationPermission;
-
-  List<String> month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ];
   String? desc;
   @override
   void initState() {
@@ -114,10 +99,7 @@ class _TimerPageState extends State<TimerPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                            timerState.startTime == null
-                                ? '-'
-                                : '${timerState.startTime!.hour.toString().padLeft(2, '0')}:${timerState.startTime!.minute.toString().padLeft(2, '0')}:${timerState.startTime!.second.toString().padLeft(2, '0')}',
+                        Text(StringUtils.stopWatch(timerState.startTime),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
@@ -125,10 +107,7 @@ class _TimerPageState extends State<TimerPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                            timerState.startTime == null
-                                ? '-'
-                                : '${timerState.startTime!.day} ${month[timerState.startTime!.month - 1]} ${timerState.startTime!.year}',
+                        Text(StringUtils.dayMonthYear(timerState.startTime),
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 15.0)),
                       ],
@@ -145,10 +124,7 @@ class _TimerPageState extends State<TimerPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                            timerState.endTime == null
-                                ? '-'
-                                : '${timerState.endTime!.hour.toString().padLeft(2, '0')}:${timerState.endTime!.minute.toString().padLeft(2, '0')}:${timerState.endTime!.second.toString().padLeft(2, '0')}',
+                        Text(StringUtils.stopWatch(timerState.endTime),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
@@ -156,10 +132,7 @@ class _TimerPageState extends State<TimerPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                            timerState.endTime == null
-                                ? '-'
-                                : '${timerState.endTime!.day} ${month[timerState.endTime!.month - 1]} ${timerState.endTime!.year}',
+                        Text(StringUtils.dayMonthYear(timerState.endTime),
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 15.0)),
                       ],
@@ -284,9 +257,7 @@ class _TimerPageState extends State<TimerPage> {
             child:
                 const Text('RESET', style: TextStyle(color: Color(0XFFA7A6C5))),
             onPressed: () {
-              setState(() {
-                timerState.resetTimer();
-              });
+              timerState.resetTimer();
             },
           ),
         )
@@ -338,7 +309,6 @@ class _TimerPageState extends State<TimerPage> {
                 timerState.resetTimer();
                 timerState.startTime = null;
                 timerState.endTime = null;
-                //setState(() {});
               });
             },
           ),

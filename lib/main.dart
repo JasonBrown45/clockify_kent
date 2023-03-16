@@ -51,7 +51,7 @@ class MainApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromRGBO(34, 57, 123, 1.0)),
       ),
-      home: const EmailPage(),
+      home: EmailPage(),
     );
   }
 }

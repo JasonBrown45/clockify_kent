@@ -14,10 +14,7 @@ class ActivityState extends ChangeNotifier {
     Activity temp = activityBox.values
         .firstWhere((element) => element.activityID == activityID);
     temp.activityDesc = desc;
-    print(desc);
-    var index = temp.key;
     await activityBox.put(temp.key, temp);
-    print(temp.activityDesc);
     notifyListeners();
   }
 
@@ -34,8 +31,7 @@ class ActivityState extends ChangeNotifier {
     return temp;
   }
 
-  sortNearby(Position pos) {
-    List temp = activityBox.values.toList();
+  static sortNearby(Position pos, List<dynamic> temp) {
     temp.sort((a, b) {
       if (a.latitude == null) {
         return 1;

@@ -4,15 +4,12 @@ import 'package:provider/provider.dart';
 import '../../route/page_route.dart';
 import '../state/user_auth_state.dart';
 
-class EmailPage extends StatefulWidget {
-  const EmailPage({super.key});
-
-  @override
-  State<EmailPage> createState() => _EmailPageState();
-}
-
-class _EmailPageState extends State<EmailPage> {
+// ignore: must_be_immutable
+class EmailPage extends StatelessWidget {
   String? email;
+
+  EmailPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
