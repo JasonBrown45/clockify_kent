@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../main.dart';
+import '../../hive_helper.dart';
 import '../../model/activity.dart';
 
 class TimerState extends ChangeNotifier {

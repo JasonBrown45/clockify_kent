@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../main.dart';
+import '../../hive_helper.dart';
 import '../../model/activity.dart';
 
 class ActivityState extends ChangeNotifier {

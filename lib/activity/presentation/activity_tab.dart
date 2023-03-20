@@ -61,7 +61,6 @@ class _ActivityBarState extends State<ActivityBar>
               TimerPage(
                 activeUser: widget.activeUser,
                 onNext: () => _activityTabController.index = 1,
-                inputtedActivityID: -1,
               ),
               ActivityPage(
                 activeUser: widget.activeUser,

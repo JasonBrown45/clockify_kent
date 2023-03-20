@@ -8,9 +8,9 @@ import '../auth/presentation/register_page.dart';
 import '../model/activity.dart';
 import '../model/user.dart';
 
-Route createEmailPageRoute(email) {
+Route createEmailPageRoute() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => EmailPage(),
+    pageBuilder: (context, animation, secondaryAnimation) => const EmailPage(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
@@ -26,11 +26,10 @@ Route createEmailPageRoute(email) {
   );
 }
 
-Route createPasswordPageRoute(String? email) {
+Route createPasswordPageRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
         const PasswordPage(),
-    settings: RouteSettings(arguments: email),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;

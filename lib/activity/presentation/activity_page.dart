@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:grouped_list/grouped_list.dart';
 
-import '../../main.dart';
+import '../../hive_helper.dart';
 import '../../model/user.dart';
 import '../../utils/string_utils.dart';
 import '../state/activity_state.dart';
