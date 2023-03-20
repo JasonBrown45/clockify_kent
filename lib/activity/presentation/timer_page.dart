@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../hive_helper.dart';
+import '../../utils/hive_helper.dart';
 import '../../model/activity.dart';
 import '../../model/user.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,7 +11,6 @@ import '../state/timer_state.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key, required this.onNext, required this.activeUser});
-  //final int inputtedActivityID;
   final User activeUser;
   final VoidCallback onNext;
 
@@ -22,7 +21,6 @@ class TimerPage extends StatefulWidget {
 class _TimerPageState extends State<TimerPage> {
   late TimerState timerState;
   Position? position;
-  String? desc;
   @override
   void initState() {
     detectLocation();
@@ -175,9 +173,7 @@ class _TimerPageState extends State<TimerPage> {
                   return null;
                 },
                 onChanged: (value) {
-                  setState(() {
-                    desc = value;
-                  });
+                  timer.onChangedDesc(value);
                 },
                 style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
@@ -253,7 +249,9 @@ class _TimerPageState extends State<TimerPage> {
             child:
                 const Text('RESET', style: TextStyle(color: Color(0XFFA7A6C5))),
             onPressed: () {
-              timerState.resetTimer();
+              setState(() {
+                timerState.resetTimer();
+              });
             },
           ),
         )
@@ -276,9 +274,9 @@ class _TimerPageState extends State<TimerPage> {
             child: const Text('SAVE', style: TextStyle(color: Colors.white)),
             onPressed: () {
               setState(() {
-                if (desc == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Deskripsi harus diisi')));
+                if (timerState.desc == null || timerState.desc == '') {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Description cannot be empty')));
                   return;
                 } else if (position == null) {
                   ScaffoldMessenger.of(context)
@@ -290,17 +288,8 @@ class _TimerPageState extends State<TimerPage> {
                       const SnackBar(content: Text('Time Checking Error')));
                   return;
                 }
-                DateTime activityDate = DateTime(timerState.startTime!.year,
-                    timerState.startTime!.month, timerState.startTime!.day);
-                Activity activity = Activity(
-                    activityID: activityBox.length + 1,
-                    userID: widget.activeUser.userID,
-                    activityDesc: desc!,
-                    activityDate: activityDate,
-                    activityStart: timerState.startTime!,
-                    activityEnd: timerState.endTime!,
-                    latitude: position!.latitude,
-                    longitude: position!.longitude);
+                Activity activity = timerState.initSaveActivity(
+                    widget.activeUser.userID, position!);
                 timerState.saveActivity(activity);
                 timerState.resetTimer();
                 timerState.startTime = null;

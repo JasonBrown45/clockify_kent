@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
-import '../../hive_helper.dart';
+import '../../utils/hive_helper.dart';
 import '../../model/activity.dart';
 
 class TimerState extends ChangeNotifier {
@@ -14,8 +15,14 @@ class TimerState extends ChangeNotifier {
   DateTime? startTime;
   DateTime? endTime;
 
+  String? desc;
+
   bool startState = false;
   bool saveState = false;
+
+  void onChangedDesc(String value) {
+    notifyListeners();
+  }
 
   initStartTimer() {
     hour = 0;
@@ -23,6 +30,7 @@ class TimerState extends ChangeNotifier {
     second = 0;
     startTime = DateTime.now();
     startState = true;
+    notifyListeners();
   }
 
   startTimer() {
@@ -59,6 +67,20 @@ class TimerState extends ChangeNotifier {
     startState = false;
     saveState = false;
     notifyListeners();
+  }
+
+  initSaveActivity(int userID, Position position) async {
+    DateTime activityDate =
+        DateTime(startTime!.year, startTime!.month, startTime!.day);
+    return Activity(
+        activityID: activityBox.length + 1,
+        userID: userID,
+        activityDesc: desc!,
+        activityDate: activityDate,
+        activityStart: startTime!,
+        activityEnd: endTime!,
+        latitude: position.latitude,
+        longitude: position.longitude);
   }
 
   saveActivity(Activity activity) async {

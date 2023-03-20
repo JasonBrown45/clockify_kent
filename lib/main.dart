@@ -10,7 +10,7 @@ import 'activity/state/timer_state.dart';
 import 'auth/state/user_auth_state.dart';
 import 'activity/state/activity_state.dart';
 import 'auth/presentation/email_page.dart';
-import 'hive_helper.dart';
+import 'utils/hive_helper.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

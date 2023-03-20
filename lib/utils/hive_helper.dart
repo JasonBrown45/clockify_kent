@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
-import 'model/activity.dart';
-import 'model/user.dart';
+import '../model/activity.dart';
+import '../model/user.dart';
 
 late Box userBox;
 late Box activityBox;

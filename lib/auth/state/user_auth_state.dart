@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../hive_helper.dart';
+import '../../utils/hive_helper.dart';
 import '../../model/user.dart';
 
 class AuthState extends ChangeNotifier {

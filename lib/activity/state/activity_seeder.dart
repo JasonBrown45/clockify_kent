@@ -1,4 +1,4 @@
-import '../../hive_helper.dart';
+import '../../utils/hive_helper.dart';
 import '../../model/activity.dart';
 
 class ActivitySeeder {
