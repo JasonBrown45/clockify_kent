@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/hive_helper.dart';
 import '../../model/activity.dart';
 import '../../model/user.dart';
 import 'package:geolocator/geolocator.dart';
@@ -76,64 +75,60 @@ class _TimerPageState extends State<TimerPage> {
             const SizedBox(
               height: 60,
             ),
-            Consumer<TimerState>(
-              builder: (context, timer, child) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(45, 0, 40, 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(45, 0, 40, 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Start Time',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 18.0)),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(StringUtils.stopWatch(timer.startTime),
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w700)),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(StringUtils.dayMonthYear(timer.startTime),
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 15.0)),
-                        ],
-                      ),
+                      const Text('Start Time',
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 18.0)),
                       const SizedBox(
-                        width: 100,
+                        height: 5,
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('End Time',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 18.0)),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(StringUtils.stopWatch(timer.endTime),
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w700)),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(StringUtils.dayMonthYear(timer.endTime),
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 15.0)),
-                        ],
+                      Text(StringUtils.stopWatch(timer.startTime),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700)),
+                      const SizedBox(
+                        height: 5,
                       ),
+                      Text(StringUtils.dayMonthYear2Digit(timer.startTime),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 15.0)),
                     ],
                   ),
-                );
-              },
+                  const SizedBox(
+                    width: 100,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('End Time',
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 18.0)),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(StringUtils.stopWatch(timer.endTime),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700)),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(StringUtils.dayMonthYear2Digit(timer.endTime),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 15.0)),
+                    ],
+                  ),
+                ],
+              ),
             ),
             Center(
                 child: Padding(

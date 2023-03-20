@@ -5,6 +5,45 @@ import '../../utils/hive_helper.dart';
 import '../../model/activity.dart';
 
 class ActivityState extends ChangeNotifier {
+  late List<dynamic> res;
+  late List<dynamic> tempStore;
+  late List<dynamic> tempLoc;
+  List<String> sortBy = ['Latest Date', 'Nearby'];
+
+  String selectedSort = 'Latest Date';
+  String? detailDesc;
+  String? searchInput;
+
+  Position? position;
+
+  onChangedSelectedSort(String value) {
+    selectedSort = value;
+    notifyListeners();
+  }
+
+  onChangedDetailDesc(String value) {
+    detailDesc = value;
+    notifyListeners();
+  }
+
+  onChangedSearchInput(String value) {
+    detailDesc = value;
+    notifyListeners();
+  }
+
+  initActivityList(int userID) async {
+    res = activityBox.values
+        .where((element) => element.userID == userID)
+        .toList();
+    tempStore = res
+        .where((element) => searchInput == null
+            ? true
+            : element.activityDesc.contains(searchInput))
+        .toList();
+    await detectLocation();
+    tempLoc = sortNearby(tempStore);
+  }
+
   insertActivity(Activity activity) async {
     await activityBox.add(activity);
     notifyListeners();
@@ -22,6 +61,7 @@ class ActivityState extends ChangeNotifier {
     Activity temp = activityBox.values
         .firstWhere((element) => element.activityID == activityID);
     await activityBox.delete(temp.key);
+
     notifyListeners();
   }
 
@@ -31,19 +71,33 @@ class ActivityState extends ChangeNotifier {
     return temp;
   }
 
-  static sortNearby(Position pos, List<dynamic> temp) {
-    temp.sort((a, b) {
-      if (a.latitude == null) {
-        return 1;
-      } else if (b.latitude == null) {
-        return -1;
+  sortNearby(List<dynamic> temp) {
+    if (position != null) {
+      temp.sort((a, b) {
+        return Geolocator.distanceBetween(a.latitude!, a.longitude!,
+                position!.latitude, position!.longitude)
+            .compareTo(Geolocator.distanceBetween(b.latitude!, b.longitude!,
+                position!.latitude, position!.longitude));
+      });
+      return temp;
+    } else {
+      return temp;
+    }
+  }
+
+  detectLocation() async {
+    var isGPSAvaliable = await Geolocator.isLocationServiceEnabled();
+    if (isGPSAvaliable) {
+      LocationPermission permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return false;
+      } else if (permission == LocationPermission.deniedForever) {
+        return false;
       } else {
-        return Geolocator.distanceBetween(
-                a.latitude!, a.longitude!, pos.latitude, pos.longitude)
-            .compareTo(Geolocator.distanceBetween(
-                b.latitude!, b.longitude!, pos.latitude, pos.longitude));
+        position = await Geolocator.getCurrentPosition();
       }
-    });
-    return temp;
+    } else {
+      return false;
+    }
   }
 }

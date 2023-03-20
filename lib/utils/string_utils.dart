@@ -1,22 +1,11 @@
-class StringUtils {
-  static final List<String> month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ];
+import 'package:intl/intl.dart';
 
+class StringUtils {
   static String stopWatch(DateTime? datetime) {
     if (datetime != null) {
-      return '${datetime.hour.toString().padLeft(2, '0')}:${datetime.minute.toString().padLeft(2, '0')}:${datetime.second.toString().padLeft(2, '0')}';
+      var formatTime = DateFormat('hh:mm:ss');
+      String formattedTime = formatTime.format(datetime);
+      return formattedTime;
     }
     return '-';
   }
@@ -27,15 +16,27 @@ class StringUtils {
           hours: datetime1.hour,
           minutes: datetime1.minute,
           seconds: datetime1.second)));
+      var formatTime = DateFormat('HH:mm:ss');
+      String formattedTime = formatTime.format(tempDate);
+      return formattedTime;
+    }
+    return '-';
+  }
 
-      return '${tempDate.hour.toString().padLeft(2, '0')}:${tempDate.minute.toString().padLeft(2, '0')}:${tempDate.second.toString().padLeft(2, '0')}';
+  static String dayMonthYear2Digit(DateTime? datetime) {
+    if (datetime != null) {
+      var formatTime = DateFormat('dd MMM yy');
+      String formattedTime = formatTime.format(datetime);
+      return formattedTime;
     }
     return '-';
   }
 
   static String dayMonthYear(DateTime? datetime) {
     if (datetime != null) {
-      return '${datetime.day} ${month[datetime.month - 1]} ${datetime.year}';
+      var formatTime = DateFormat('dd MMM yyyy');
+      String formattedTime = formatTime.format(datetime);
+      return formattedTime;
     }
     return '-';
   }

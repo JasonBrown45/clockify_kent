@@ -8,24 +8,11 @@ import '../../utils/string_utils.dart';
 import '../state/activity_state.dart';
 import 'activity_tab.dart';
 
-class DetailPage extends StatefulWidget {
+class DetailPage extends StatelessWidget {
   const DetailPage(
-      {super.key, required this.activity, required this.activeUser});
+      {super.key, required this.selectedActivity, required this.activeUser});
   final User activeUser;
-  final Activity activity;
-  @override
-  State<DetailPage> createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  late ActivityState activityState;
-  String? desc;
-
-  @override
-  void initState() {
-    activityState = Provider.of<ActivityState>(context, listen: false);
-    super.initState();
-  }
+  final Activity selectedActivity;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +31,7 @@ class _DetailPageState extends State<DetailPage> {
                         color: Colors.white),
                     onPressed: () {
                       Navigator.of(context)
-                          .pop(createActivityBarPageRoute(widget.activeUser));
+                          .pop(createActivityBarPageRoute(activeUser));
                     },
                   ),
                 ),
@@ -64,7 +51,7 @@ class _DetailPageState extends State<DetailPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
                 child: Text(
-                  StringUtils.dayMonthYear(widget.activity.activityDate),
+                  StringUtils.dayMonthYear(selectedActivity.activityDate),
                   style: const TextStyle(
                       color: Colors.yellow,
                       fontSize: 20.0,
@@ -76,8 +63,8 @@ class _DetailPageState extends State<DetailPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
                 child: Text(
-                  StringUtils.stopWatchSubtract(widget.activity.activityEnd,
-                      widget.activity.activityStart),
+                  StringUtils.stopWatchSubtract(selectedActivity.activityEnd,
+                      selectedActivity.activityStart),
                   style: const TextStyle(color: Colors.white, fontSize: 60.0),
                 ),
               ),
@@ -99,7 +86,7 @@ class _DetailPageState extends State<DetailPage> {
                       const SizedBox(
                         height: 5,
                       ),
-                      Text(StringUtils.stopWatch(widget.activity.activityEnd),
+                      Text(StringUtils.stopWatch(selectedActivity.activityEnd),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18.0,
@@ -108,8 +95,8 @@ class _DetailPageState extends State<DetailPage> {
                         height: 5,
                       ),
                       Text(
-                          StringUtils.dayMonthYear(
-                              widget.activity.activityStart),
+                          StringUtils.dayMonthYear2Digit(
+                              selectedActivity.activityStart),
                           style: const TextStyle(
                               color: Colors.white, fontSize: 15.0)),
                     ],
@@ -126,7 +113,7 @@ class _DetailPageState extends State<DetailPage> {
                       const SizedBox(
                         height: 5,
                       ),
-                      Text(StringUtils.stopWatch(widget.activity.activityEnd),
+                      Text(StringUtils.stopWatch(selectedActivity.activityEnd),
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18.0,
@@ -135,7 +122,8 @@ class _DetailPageState extends State<DetailPage> {
                         height: 5,
                       ),
                       Text(
-                          StringUtils.dayMonthYear(widget.activity.activityEnd),
+                          StringUtils.dayMonthYear2Digit(
+                              selectedActivity.activityEnd),
                           style: const TextStyle(
                               color: Colors.white, fontSize: 15.0)),
                     ],
@@ -156,7 +144,7 @@ class _DetailPageState extends State<DetailPage> {
                         leading:
                             const Icon(Icons.location_on, color: Colors.yellow),
                         title: Text(
-                          '${widget.activity.latitude.toStringAsFixed(6)}.${widget.activity.longitude.toStringAsFixed(5)}',
+                          '${selectedActivity.latitude.toStringAsFixed(6)}.${selectedActivity.longitude.toStringAsFixed(5)}',
                           style: const TextStyle(color: Colors.white),
                         ),
                       ),
@@ -167,90 +155,93 @@ class _DetailPageState extends State<DetailPage> {
             Center(
                 child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: TextFormField(
-                keyboardType: TextInputType.multiline,
-                minLines: 3,
-                maxLines: 5,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                initialValue: widget.activity.activityDesc,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Input ini kosong, mohon diisi';
-                  }
-                  return null;
+              child: Consumer<ActivityState>(
+                builder: (context, activity, child) {
+                  return TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    minLines: 3,
+                    maxLines: 5,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    initialValue: selectedActivity.activityDesc,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Input ini kosong, mohon diisi';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      activity.onChangedDetailDesc(value);
+                    },
+                    style: const TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                        hintText: 'Write your activity here ...',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16.0)),
+                        filled: true,
+                        fillColor: Colors.white),
+                  );
                 },
-                onChanged: (value) {
-                  setState(() {
-                    desc = value;
-                  });
-                },
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                    hintText: 'Write your activity here ...',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16.0)),
-                    filled: true,
-                    fillColor: Colors.white),
               ),
             )),
             Container(
               padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 165,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith(
-                              (states) => const Color(0XFF45CDDC)),
-                          shape: MaterialStateProperty.all(
-                              const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(8, 8))))),
-                      child: const Text('SAVE',
-                          style: TextStyle(color: Colors.white)),
-                      onPressed: () {
-                        setState(() {
-                          if (desc == '') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Deskripsi harus diisi')));
-                            return;
-                          } else {
-                            activityState.updateActivity(
-                                widget.activity.activityID, desc!);
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 165,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.white),
-                          shape: MaterialStateProperty.all(
-                              const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(8, 8))))),
-                      child: const Text('DELETE',
-                          style: TextStyle(color: Color(0XFFA7A6C5))),
-                      onPressed: () {
-                        setState(() {
-                          activityState
-                              .deleteActivity(widget.activity.activityID);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ActivityBar(
-                                      activeUser: widget.activeUser)));
-                        });
-                      },
-                    ),
-                  )
-                ],
+              child: Consumer<ActivityState>(
+                builder: (context, activity, child) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: 165,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) => const Color(0XFF45CDDC)),
+                              shape: MaterialStateProperty.all(
+                                  const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.elliptical(8, 8))))),
+                          child: const Text('SAVE',
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            if (activity.detailDesc == '') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Deskripsi harus diisi')));
+                              return;
+                            } else {
+                              activity.updateActivity(
+                                  selectedActivity.activityID,
+                                  activity.detailDesc!);
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: 165,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) => Colors.white),
+                              shape: MaterialStateProperty.all(
+                                  const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.elliptical(8, 8))))),
+                          child: const Text('DELETE',
+                              style: TextStyle(color: Color(0XFFA7A6C5))),
+                          onPressed: () {
+                            activity
+                                .deleteActivity(selectedActivity.activityID);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ActivityBar(activeUser: activeUser)));
+                          },
+                        ),
+                      )
+                    ],
+                  );
+                },
               ),
             ),
           ],

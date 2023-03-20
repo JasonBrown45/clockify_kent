@@ -18,8 +18,10 @@ void main() async {
 
   Directory appPath = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appPath.path);
+
   HiveHelper.initAdapter();
-  HiveHelper.openAllBox();
+  await HiveHelper.openAllBox();
+  //HiveHelper.seedActivity();
 
   runApp(MultiProvider(
     providers: [

@@ -86,7 +86,7 @@ Route createEmailPageRoute2() {
 Route createActivityDetailPageRoute(Activity selectActivity, User selectUser) {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => DetailPage(
-      activity: selectActivity,
+      selectedActivity: selectActivity,
       activeUser: selectUser,
     ),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {

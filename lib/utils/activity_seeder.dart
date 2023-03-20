@@ -1,5 +1,5 @@
-import '../../utils/hive_helper.dart';
-import '../../model/activity.dart';
+import 'hive_helper.dart';
+import '../model/activity.dart';
 
 class ActivitySeeder {
   static seedActivity() async {

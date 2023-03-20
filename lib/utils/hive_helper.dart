@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 
 import '../model/activity.dart';
 import '../model/user.dart';
+import 'activity_seeder.dart';
 
 late Box userBox;
 late Box activityBox;
@@ -19,6 +20,6 @@ class HiveHelper {
 
   static seedActivity() {
     //activityBox.deleteFromDisk();
-    //await ActivitySeeder.seedActivity();
+    ActivitySeeder.seedActivity();
   }
 }

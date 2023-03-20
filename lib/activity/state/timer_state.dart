@@ -21,6 +21,7 @@ class TimerState extends ChangeNotifier {
   bool saveState = false;
 
   void onChangedDesc(String value) {
+    desc = value;
     notifyListeners();
   }
 
@@ -69,7 +70,7 @@ class TimerState extends ChangeNotifier {
     notifyListeners();
   }
 
-  initSaveActivity(int userID, Position position) async {
+  initSaveActivity(int userID, Position position) {
     DateTime activityDate =
         DateTime(startTime!.year, startTime!.month, startTime!.day);
     return Activity(
@@ -86,25 +87,5 @@ class TimerState extends ChangeNotifier {
   saveActivity(Activity activity) async {
     await activityBox.add(activity);
     notifyListeners();
-  }
-
-  deleteActivity(int inputtedActivityID) {
-    var result = activityBox.values.firstWhere(
-        (element) => element.activityID == inputtedActivityID,
-        orElse: () => Activity(
-            activityID: -1,
-            userID: -1,
-            activityDesc: ' ',
-            activityDate: DateTime(1 - 1 - 1970),
-            activityStart: DateTime(1 - 1 - 1970),
-            activityEnd: DateTime(1 - 1 - 1970),
-            latitude: -1,
-            longitude: -1));
-    if (result.activityID == -1) {
-      return false;
-    } else {
-      deleteActivity(inputtedActivityID);
-      return true;
-    }
   }
 }
