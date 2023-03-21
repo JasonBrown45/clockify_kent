@@ -146,7 +146,7 @@ class _ActivityPageState extends State<ActivityPage> {
                                     MaterialPageRoute(
                                         builder: (context) => DetailPage(
                                             selectedActivity: element,
-                                            activeUser: widget.activeUser)))
+                                            activeUser: widget.activeUser))) //;
                                 .then((value) => setState(() {}));
                           },
                           title: Row(

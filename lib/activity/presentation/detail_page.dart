@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/activity.dart';
-import '../../route/page_route.dart';
+import '../../routes/page_route.dart';
 import '../../utils/string_utils.dart';
 import '../state/activity_state.dart';
 import 'activity_tab.dart';

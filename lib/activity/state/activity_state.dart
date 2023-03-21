@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
 import '../../utils/hive_helper.dart';
 import '../../model/activity.dart';
@@ -13,6 +14,7 @@ class ActivityState extends ChangeNotifier {
   String selectedSort = 'Latest Date';
   String? detailDesc;
   String? searchInput;
+  String? searchInputCapitalization;
 
   Position? position;
 
@@ -27,7 +29,8 @@ class ActivityState extends ChangeNotifier {
   }
 
   onChangedSearchInput(String value) {
-    detailDesc = value;
+    searchInput = value;
+    searchInputCapitalization = toBeginningOfSentenceCase(value);
     notifyListeners();
   }
 
@@ -38,7 +41,8 @@ class ActivityState extends ChangeNotifier {
     tempStore = res
         .where((element) => searchInput == null
             ? true
-            : element.activityDesc.contains(searchInput))
+            : element.activityDesc.contains(searchInput) ||
+                element.activityDesc.contains(searchInputCapitalization))
         .toList();
     await detectLocation();
     tempLoc = sortNearby(tempStore);

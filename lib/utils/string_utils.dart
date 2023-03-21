@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class StringUtils {
   static String stopWatch(DateTime? datetime) {
     if (datetime != null) {
-      var formatTime = DateFormat('hh:mm:ss');
+      var formatTime = DateFormat('HH:mm:ss');
       String formattedTime = formatTime.format(datetime);
       return formattedTime;
     }

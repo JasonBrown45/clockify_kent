@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/user.dart';
-import '../../route/page_route.dart';
+import '../../routes/page_route.dart';
 
 class PasswordPage extends StatelessWidget {
   const PasswordPage({super.key});

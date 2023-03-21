@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../activity/presentation/activity_tab.dart';
 import '../../model/user.dart';
-import '../../route/page_route.dart';
+import '../../routes/page_route.dart';
 import '../state/user_auth_state.dart';
 
 class RegisterPage extends StatelessWidget {

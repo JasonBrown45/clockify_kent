@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../route/page_route.dart';
+import '../../routes/page_route.dart';
 import '../state/user_auth_state.dart';
 
 class EmailPage extends StatelessWidget {
